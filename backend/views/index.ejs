@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionX Career Aptitude Test</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Baskerville:wght@700&family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Clean, non-cursive font */
+            background-color: #feaafefd;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Baskerville', serif; /* Bold and elegant font */
+            color: #4A148C; /* Dark purple heading */
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-family: 'Baskerville', serif; /* Bold and elegant font */
+            color: #6A1B9A; /* Lighter purple */
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #f5d5ff;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 30px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #6A1B9A;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .form-container {
+            margin-top: 70px;
+            display: inline-block;
+            text-align: left;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #4A148C;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+            margin-bottom: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4A148C;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #6A1B9A;
+        }
+    </style>
+</head>
+<body>
+    <h1>VisionX Career Aptitude Test</h1>
+    <h2>Discover your potential and find the career that suits you!</h2>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="form-container">
+        <form id="aptitudeTestForm" action="/submit" method="POST" onsubmit="return validateForm()">
+            <% 
+            const questions = [
+                { text: "When given a choice, do you prefer activities that involve being outdoors or working with nature?", options: ["Yes", "No"] },
+                { text: "How do you feel about working with animals or studying animal behavior?", options: ["Very interested", "Not interested"] },
+                { text: "Do you enjoy expressing yourself through visual arts like painting, sculpting, or photography?", options: ["Yes", "No"] },
+                { text: "Are you passionate about creating or designing clothes, textiles, or fabrics?", options: ["Yes", "No"] },
+                { text: "How do you feel about managing and organizing events or large gatherings?", options: ["Love it", "Don’t enjoy it"] },
+                { text: "Would you enjoy working in the food industry, either in culinary arts or researching food history?", options: ["Yes", "No"] },
+                { text: "Do you have a deep interest in gemstones, jewelry, and designing unique pieces?", options: ["Yes", "No"] },
+                { text: "How interested are you in storytelling, whether through games, theatre, or other mediums?", options: ["Very interested", "Not interested"] },
+                { text: "Are you interested in engineering, particularly in unique fields like ceramics or mining?", options: ["Yes", "No"] },
+                { text: "Do you enjoy working with data, analyzing patterns, or understanding human behavior?", options: ["Yes", "No"] },
+                { text: "How do you feel about exploring and studying marine life and ecosystems?", options: ["Very interested", "Not interested"] },
+                { text: "Do you enjoy performing on stage, whether it’s acting, singing, or dancing?", options: ["Yes", "No"] },
+                { text: "Are you interested in the science of cosmetics, perfumes, and creating beauty products?", options: ["Yes", "No"] },
+                { text: "Do you have a passion for exploring forests, wildlife, and understanding natural habitats?", options: ["Yes", "No"] },
+                { text: "How interested are you in understanding the history and culture of food across different regions?", options: ["Very interested", "Not interested"] },
+                { text: "Do you find joy in creating music or playing instruments?", options: ["Yes", "No"] },
+                { text: "Are you curious about the relationship between people and their environments, particularly in tourism?", options: ["Yes", "No"] },
+                { text: "Would you enjoy researching and developing new agricultural techniques or sustainable farming methods?", options: ["Yes", "No"] },
+                { text: "Do you have a keen interest in the art of wine making and studying different types of wine?", options: ["Yes", "No"] },
+                { text: "Do you enjoy hands-on work that involves creating sculptures, pottery, or working with ceramics?", options: ["Yes", "No"] }
+            ];
+            questions.forEach((question, index) => { 
+            %>
+                <div class="question">
+                    <label><%= index + 1 %>: <%= question.text %></label>
+                    <input type="radio" name="answers[<%= index %>]" value="<%= question.options[0] %>" required> <%= question.options[0] %>
+                    <input type="radio" name="answers[<%= index %>]" value="<%= question.options[1] %>"> <%= question.options[1] %>
+                </div>
+            <% }); %>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const progressBar = document.getElementById("progressBar");
+        const form = document.getElementById("aptitudeTestForm");
+        const totalQuestions = <%= questions.length %>;
+
+        form.addEventListener("change", () => {
+            const answeredQuestions = [...form.elements].filter((el) => el.checked);
+            const progressPercentage = (answeredQuestions.length / totalQuestions) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+        });
+
+        function validateForm() {
+            const answeredQuestions = [...form.elements].filter((el) => el.checked);
+            if (answeredQuestions.length < totalQuestions) {
+                alert("Please answer all questions before submitting.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
