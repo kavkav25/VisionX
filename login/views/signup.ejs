@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sign-Up Form Container -->
+    <div class="form-container">
+        <h2>Sign-Up</h2>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="username" placeholder="Enter your name" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
+
+    <!-- JavaScript for popup and form submission -->
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            const username = document.getElementById('name').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Sending POST request to the server with form data
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const data = await response.json();
+                
+                // Show popup for successful registration
+                if (data.success) {
+                    alert('Registration successful!'); 
+                    window.location.href = '/'; // Redirect to login page after success
+                } else {
+                    alert(data.message || 'Something went wrong. Try again.');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
