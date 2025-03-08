@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Top Careers</title>
+    <style>
+        :root { 
+            --background-color: #FFFCF5; /* Ivory Whisper for the entire website background */
+            --default-color: #89515A; /* Burgundy Blush for the majority of text content */
+            --heading-color: #7f0ab5; /* Twilight Indigo for headings, subheadings, and titles */
+            --accent-color: #b507f5; /* Lilac Mist for buttons, links, and standout elements */
+            --surface-color: #FFFFFF; /* White for boxed elements (cards, etc.) */
+            --contrast-color: #FFFCF5; /* Ivory Whisper for text on dark backgrounds */
+        }
+
+        /* Page Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #f5ed91, #cb9ef9); /* Gradient background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            color: var(--default-color); /* Default text color */
+        }
+
+        h1 {
+            font-size: 48px;
+            color: var(--heading-color); /* Heading color */
+            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+            animation: slideIn 1s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeIn 1s 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        li {
+            background: var(--surface-color); /* White for card background */
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+    padding: 20px;
+    width: 280px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    cursor: pointer;
+    color: var(--default-color); /* Card text color */
+    display: flex; /* Use flexbox to center the content */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    text-align: center; /* Center text */
+        }
+
+        li:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--accent-color); /* Lilac Mist for links */
+            font-weight: 600;
+            font-size: 22px;
+        }
+
+        p {
+            color: #555; /* Dark gray for paragraph text */
+            font-size: 18px;
+        }
+
+        /* Confetti Styling */
+        .confetti {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .confetti-piece {
+            width: 10px;
+            height: 20px;
+            background-color: hsl(calc(360 * var(--i)), 100%, 70%);
+            position: absolute;
+            top: -10px;
+            animation: fall 3s linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Top Careers</h1>
+    <ul>
+        <% 
+            const uniqueCareers = [...new Map(topCareers.map(c => [c.name, c])).values()]; 
+            uniqueCareers.forEach(career => { 
+        %>
+            <li onclick="window.location.href='/career/<%= career.name.replace(/ /g, '_') %>'">
+                <a href="/career/<%= career.name.replace(/ /g, '_') %>"><%= career.name %></a>
+                <p><%= career.description %></p>
+            </li>
+        <% }); %>
+    </ul>
+
+    <!-- Confetti Container -->
+    <div class="confetti"></div>
+
+    <script>
+        // Create a single confetti piece
+        function createConfettiPiece(i) {
+            const confettiPiece = document.createElement('div');
+            confettiPiece.classList.add('confetti-piece');
+            confettiPiece.style.setProperty('--i', i / 50);
+            confettiPiece.style.left = Math.random() * 100 + 'vw';
+            confettiPiece.style.animationDelay = Math.random() * 3 + 's';
+            document.querySelector('.confetti').appendChild(confettiPiece);
+        }
+
+        // Generate 100 confetti pieces
+        for (let i = 0; i < 100; i++) {
+            createConfettiPiece(i);
+        }
+
+        // Remove confetti after 3 seconds
+        setTimeout(() => {
+            document.querySelector('.confetti').innerHTML = '';
+        }, 3000);
+    </script>
+</body>
+</html>
