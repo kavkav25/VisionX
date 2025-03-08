@@ -30,7 +30,10 @@
 ---
 
 ## 📷 Screenshots
-(Add screenshots of the platform here)
+![image](https://github.com/user-attachments/assets/74be8c9d-6793-4e43-b941-cc388f7f78e8)
+![image](https://github.com/user-attachments/assets/8332321d-ff95-4c9d-b15f-adf74bc6814f)
+![image](https://github.com/user-attachments/assets/c7d8b0e3-9ad8-4b41-aaf2-0734216794db)
+![image](https://github.com/user-attachments/assets/d4e1d94b-3627-4e2b-8381-0ed10f0279cd)
 
 ---
 
